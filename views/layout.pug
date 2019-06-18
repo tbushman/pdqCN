@@ -1,0 +1,66 @@
+doctype strict
+html
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge; charset=utf-8")
+		title= appTitle
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		link(href="https://fonts.googleapis.com/css?family=Overpass:200,400,700", rel="stylesheet")
+		//- base(href="")
+		link(rel="stylesheet", href="/stylesheets/style.css")
+		//- script(type="module", src="/scripts/vue.esm.browser.js")
+		link(href="data:,", rel="icon")
+		script(type="text/javascript", src="/scripts/vue.js")
+		script(type="text/javascript", src="/scripts/jquery.min.js")
+	body
+		block header
+		#vue
+			block content
+		script(type="text/javascript").
+			Vue.prototype.$ = $;
+			new Vue({
+				el: '#vue',
+				data: function data() {
+					return {
+						thought: this.parseObj(!{JSON.stringify(thought)}),
+						thinking: this.parseBool(!{JSON.stringify(thinking)}),
+						hov: ''
+					}
+				},
+				mounted() {
+					console.log(this.thought);
+				},
+				methods: {
+					parseObj(obj) {
+						console.log(obj)
+						if (!obj) return '';
+						return JSON.parse(obj);
+					},
+					parseBool(bool) {
+						console.log(bool);
+						if (!bool) return false;
+						return bool;
+					},
+					hovOver(name) {
+						this.hov = name;
+					},
+					hovLeave() {
+						this.hov = ''
+					},
+					getThought() {
+						var self = this;
+						if (!self.thinking) {
+							self.thinking = true;
+							$.post('/')
+							.then((body) => {
+								console.log(body)
+								self.thought = JSON.parse(body.thought);
+								self.thinking = (!self.thought ? false : JSON.parse(body.thinking));
+							})
+							.catch((err) => {
+								console.log(err)
+							})
+						}
+					}
+				}
+			})

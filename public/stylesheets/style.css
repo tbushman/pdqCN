@@ -1,0 +1,131 @@
+:root {
+	--afontname: 'Overpass';
+	--afonttype: sans-serif;
+	--primary: #221f24;
+	--secondary: #322e35;
+	--tertiary: #113042;
+	--quarternary: #124059;
+	--quinary: rgb(238, 244, 222);
+	--highlight: #36616c;
+	--thumbw: 36px;
+}
+
+html {
+	font-family: 'Overpass', sans-serif;
+	font-family: var(--afontname), var(--afonttype);
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font-size: calc(16px + 0.5vm);
+	font-size: calc(16px + 0.5vmin);
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	pointer-events: none;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	z-index: 0;
+	background-color: #fff;
+	background-color: var(--primary);
+}
+
+.centerallwrap {
+	display: block;
+	position: relative;
+	height: 100vh;
+	width: 100%;
+	margin: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.centerall {
+	height: auto;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	pointer-events: all;
+	padding: 45px;
+	min-height: 100%;
+	position: relative;
+	display: block;
+}
+
+*[class^='tb-1'], *[class^='tb-0'] {
+	padding-right: 10px;
+	display: inline-block;
+	margin: 0 auto;
+	width: auto;
+	height: auto;
+	box-sizing: border-box;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	vertical-align: top;
+} 
+
+*[class^='tb-10-'] {
+	width: 100%;
+}
+*[class^='tb-09-'] {
+	width: 90%;
+}
+*[class^='tb-08-'] {
+	width: 80%;
+}
+*[class^='tb-07-'] {
+	width: 70%;
+}
+*[class^='tb-06-'] {
+	width: 60%;
+}
+*[class^='tb-05-'] {
+	width: 50%;
+}
+*[class^='tb-04-'] {
+	width: 40%;
+}
+*[class^='tb-03-'] {
+	width: 30%;
+}
+*[class^='tb-02-'] {
+	width: 20%;
+}
+*[class^='tb-01-'] {
+	width: 10%;
+}
+button {
+	border: 0;
+	font-style: normal;
+	font-size: inherit;
+	text-transform: inherit;
+	background: none;
+	cursor: pointer;
+	background-color: #000;
+	background-color: var(--secondary);
+	padding: 10px;
+	color: #fff;
+	color: var(--primary);
+}
+button:hover {
+	background-color: #9e1f63;
+	background-color: var(--highlight);
+}
+button span {
+	color: #fff;
+	color: var(--primary);
+}

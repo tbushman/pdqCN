@@ -1,0 +1,17 @@
+extends layout
+block header
+	
+block content
+	div.centerallwrap
+		div.centerall
+			div.tb-10-m0
+				button(v-if="!thinking", @click="getThought", v-text="'Get thought'")
+				p(v-if="thinking", v-text="'DN in use. Please wait.'")
+			div.tb-10-m0(v-if="thought")
+				p(v-text="thought.name")
+				p(v-text="thought.currentBeer")
+				p(v-text="thought.currentThought")
+				img(:src="'https://cdn.pdq.com/wp-content/uploads/2018/08/'+(hov === thought.name ? 'legos' : 'company')+'_'+thought.name+'.png'",
+					@mouseover="hovOver(thought.name)", @mouseleave="hovLeave"
+				)
+				img(:src="thought.daydream")

@@ -22,10 +22,14 @@ html
 				el: '#vue',
 				data: function data() {
 					return {
+						avatar: null,
 						thought: this.parseObj(!{JSON.stringify(thought)}),
 						thinking: this.parseBool(!{JSON.stringify(thinking)}),
 						hov: ''
 					}
+				},
+				updated() {
+					
 				},
 				mounted() {
 					console.log(this.thought);
@@ -47,6 +51,15 @@ html
 					hovLeave() {
 						this.hov = ''
 					},
+					getAvatar() {
+						var self = this;
+						$.post(`/employee/${self.thought.name}`)
+						.then((avatar) => {
+							console.log(avatar)
+							self.avatar = avatar;
+						})
+						.catch((err) => console.log(err))
+					},
 					getThought() {
 						var self = this;
 						if (!self.thinking) {
@@ -56,6 +69,9 @@ html
 								console.log(body)
 								self.thought = JSON.parse(body.thought);
 								self.thinking = (!self.thought ? false : JSON.parse(body.thinking));
+								if (!self.avatar) {
+									self.getAvatar()
+								}
 							})
 							.catch((err) => {
 								console.log(err)

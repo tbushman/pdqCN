@@ -4,8 +4,10 @@
   "description": "Cabalistic_Necromancer",
   "main": "./bin/www",
   "scripts": {
-    "test": "jest",
-    "start": "node --experimental-modules ./bin/www"
+    "test": "cross-env TEST_ENV=true RECORD_ENV=false jest --forceExit --verbose --detectOpenHandles",
+    "test-update": "cross-env TEST_ENV=true RECORD_ENV=true jest --updateSnapshot --forceExit --detectOpenHandles",
+    "test:watch": "cross-env TEST_ENV=true RECORD_ENV=false jest --watch --notify --notifyMode=change --coverage",
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -18,13 +20,32 @@
   },
   "homepage": "https://github.com/tbushman/pdqDN#readme",
   "type": "module",
+  "nodemonConfig": {
+    "exec": "node --experimental-modules ./bin/www",
+    "watch": [
+      ".env",
+      "."
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "helmet": "^3.18.0",
     "jquery": "^3.4.1",
     "pug": "^2.0.3",
     "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
     "serve-favicon": "^2.5.0",
     "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "expect": "^24.8.0",
+    "jest": "^24.8.0",
+    "nock": "^10.0.6",
+    "nock-record": "^0.3.3",
+    "nodemon": "^1.19.1"
   }
 }

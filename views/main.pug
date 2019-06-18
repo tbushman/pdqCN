@@ -11,7 +11,7 @@ block content
 				p(v-text="thought.name")
 				p(v-text="thought.currentBeer")
 				p(v-text="thought.currentThought")
-				img(:src="'https://cdn.pdq.com/wp-content/uploads/2018/08/'+(hov === thought.name ? 'legos' : 'company')+'_'+thought.name+'.png'",
+				img(v-if="avatar", :src="avatar",
 					@mouseover="hovOver(thought.name)", @mouseleave="hovLeave"
 				)
 				img(:src="thought.daydream")

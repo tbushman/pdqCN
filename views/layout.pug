@@ -62,13 +62,14 @@ html
 					},
 					getThought() {
 						var self = this;
+						self.avatar = null;
 						if (!self.thinking) {
 							self.thinking = true;
 							$.post('/')
 							.then((body) => {
 								console.log(body)
-								self.thought = JSON.parse(body.thought);
-								self.thinking = (!self.thought ? false : JSON.parse(body.thinking));
+								self.thought = body.thought;
+								self.thinking = (!self.thought ? false : body.thinking);
 								if (!self.avatar) {
 									self.getAvatar()
 								}

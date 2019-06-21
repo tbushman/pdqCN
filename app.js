@@ -2,7 +2,6 @@
 const helmet = require('helmet');
 const jQuery = require('jquery');
 const express = require('express');
-// const expressValidation = require('express-validation');
 const request = require('request-promise-native');
 const favicon = require('serve-favicon');
 const path = require('path');
@@ -71,6 +70,10 @@ function getImageUrls(req, res, next) {
 		})
 	});
 }
+
+app.use((req, res, next) => {
+  app.locals.env = process.env;
+})
 
 app.get('/reset', (req, res, next) => {
 	console.log('reset');
@@ -191,8 +194,7 @@ if (!process.env.TEST_ENV) {
 	server.on('error', (error) => {throw error});
 	server.on('listening', onListening);
 	function onListening() {
-	  const addr = server.address();
-		console.log('listening on '+ addr)
+		console.log('listening on 4000')
 	}
 }
 

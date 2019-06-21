@@ -39,7 +39,7 @@ block content
 					button(v-if="!thinking", @click="getThought", v-text="(!avatar ? 'Read someone\\'s mind' : 'Read someone else\\'s mind')",
 						:style="{display: (!avatar ? 'inline-block' : 'inherit'), margin: (!avatar ? '0' : '0 auto'), 'padding': (!avatar ? '10px' : '12px 20px 20px 20px')}"
 					)
-					p(v-if="thinking", v-text="'DN in use. Please wait.'")
+					p(v-if="thinking", v-text="appTitle+' in use. Please wait.'")
 
 
 				

@@ -5,14 +5,16 @@ script(type="text/javascript").
 		data: function data() {
 			return {
 				missingAvatar: false,
-				info: this.parseObj(!{JSON.stringify(info)}),
+				info: (this.parseObj(!{JSON.stringify(info)}) === '' ? this.parseObj(!{JSON.stringify(appTitle)}) : this.parseObj(!{JSON.stringify(info)})),
 				avatar: null,
 				thought: this.parseObj(!{JSON.stringify(thought)}),
 				thinking: this.parseBool(!{JSON.stringify(thinking)}),
 				hov: '',
 				timeout: '',
 				interval: '',
-				appTitle: this.parseObj(!{JSON.stringify(appTitle)})
+				appTitle: this.parseObj(!{JSON.stringify(appTitle)}),
+				wiw: window.innerWidth,
+				wih: window.innerHeight
 			}
 		},
 		updated() {
@@ -49,6 +51,20 @@ script(type="text/javascript").
 			},
 			hovLeave() {
 				this.hov = ''
+			},
+			getBubbleSize() {
+				var self = this;
+				var initsize = 480;
+				var targetWidth = (!self.wiw <= 1000 ? (self.wiw - 90) : (self.wiw * 0.7));
+				var diffW = targetWidth - initsize;
+				var perW = diffW / targetWidth;
+				var scaleW = 1 + perW;
+				var targetHeight = (self.wih - 90);
+				var diffH = targetHeight - initsize;
+				var perH = diffH / targetHeight;
+				var scaleH = 1 + perH;
+	
+				return 'scale('+scaleW+', '+scaleH+')';;
 			},
 			getAvatar(thinking) {
 				var self = this;

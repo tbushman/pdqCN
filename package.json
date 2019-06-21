@@ -4,9 +4,7 @@
   "description": "Cabalistic_Necromancer",
   "main": "./app.js",
   "scripts": {
-    "test": "cross-env TEST_ENV=true RECORD_ENV=false jest --forceExit --verbose --detectOpenHandles",
-    "test-update": "cross-env TEST_ENV=true RECORD_ENV=true jest --updateSnapshot --forceExit --detectOpenHandles",
-    "test:watch": "cross-env TEST_ENV=true RECORD_ENV=false jest --watch --notify --notifyMode=change --coverage",
+    "test": "cross-env TEST_ENV=true RECORD_ENV=true jest --updateSnapshot --forceExit --detectOpenHandles",
     "start": "nodemon"
   },
   "repository": {
@@ -40,7 +38,6 @@
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
-    "esm": "^3.2.25",
     "expect": "^24.8.0",
     "jest": "^24.8.0",
     "nock": "^10.0.6",

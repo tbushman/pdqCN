@@ -147,14 +147,14 @@ app.use((err, req, res, next) => {
   res.render('error', { error: err })
 })
 
-app.set('port', '4000');
+app.set('port', '80');
 if (!process.env.TEST_ENV) {
 	const server = http.createServer(app);
-	server.listen('4000')//, onListening);
+	server.listen('80')//, onListening);
 	server.on('error', (error) => {throw error});
 	server.on('listening', onListening);
 	function onListening() {
-		console.log('listening on 4000')
+		console.log('listening on 80')
 	}
 }
 

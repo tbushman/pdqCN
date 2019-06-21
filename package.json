@@ -27,14 +27,7 @@
     ]
   },
   "jest": {
-    "testEnvironment": "node",
-    "moduleFileExtensions": [
-      "js",
-      "pug"
-    ],
-    "transform": {
-      "\\.(pug)$": "jest-transform-pug"
-    }
+    "testEnvironment": "node"
   },
   "dependencies": {
     "express": "^4.17.1",
@@ -43,22 +36,16 @@
     "pug": "^2.0.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "serve-favicon": "^2.5.0",
-    "vue": "^2.6.10"
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "@vue/test-utils": "^1.0.0-beta.29",
     "cross-env": "^5.2.0",
     "esm": "^3.2.25",
     "expect": "^24.8.0",
     "jest": "^24.8.0",
-    "jest-transform-pug": "^0.1.0",
-    "jsdom": "^15.1.1",
-    "jsdom-global": "^3.0.2",
     "nock": "^10.0.6",
     "nock-record": "^0.3.3",
     "nodemon": "^1.19.1",
-    "supertest": "^4.0.2",
-    "vue-template-compiler": "^2.6.10"
+    "supertest": "^4.0.2"
   }
 }

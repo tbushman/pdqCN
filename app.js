@@ -1,4 +1,3 @@
- // module =require('module');
 const helmet = require('helmet');
 const jQuery = require('jquery');
 const express = require('express');
@@ -13,46 +12,38 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join('.', 'public')));
 app.use(favicon(path.join('.', 'public/img', 'favicon.ico')));
 app.locals.$ = jQuery;
-// app.locals.Vue = Vue;
 app.locals.appTitle = 'PDQ Cabalistic_Necromancer';
 app.locals.appUrl = 'http://localhost:4000';
 app.use(helmet());
 app.use(helmet.noCache());
-// app.use((req, res, next) => {
-// 	res.set({
-// 		'Access-Control-Allow-Origin' : req.headers.origin,
-// 		'Access-Control-Allow-Methods' : 'GET, POST, HEAD, OPTIONS',
-// 		'Access-Control-Allow-Headers' : 'Cache-Control, Origin, Content-Type, Accept',
-// 		'Access-Control-Allow-Credentials' : true
-// 	});
-// 	next();
-// });
 
+// for iterating through potential last name initial (unknown)
 const alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-// const years = ['2017', '2018', '2019', '2020'];
-// const months = ['02', '04', '05', '06', '08', '09', '10', '12'];
+// for iterating through potential image folders (unknown)
 const dates = ['2018/08', '2018/09', '2018/10', '2018/12', '2019/02', '2019/04', '2019/05', '2019/06']
 
+// check if image exists for first name given
 function getImageUrls(req, res, next) {
 	delete req.urli;
 	const name = req.params.name;
-	console.log(name);
+	// iterate through folders named by date, looking for an image named by given first name but this time without last name initial
 	dates.forEach(async (a) => {
 		if (req.urli) return;
 		const imgurl = `https://cdn.pdq.com/wp-content/uploads/${a}/company_${name}.png`;
 		const img = await request(imgurl)
 		.then((d) => d)
 		.catch((e) => {
+			// ignore not-found errors
 			if (e.statusCode && e.statusCode === 404) return null;
 			return null;
 		})
 		if (img) {
-			console.log('imgurl')
-			console.log(imgurl)
 			req.urli = imgurl
 			return next();
 		}
+		// iterate through all possible last name initials for given name
 		await alpha.forEach(async (c) => {
+			// if an image was already found, return
 			if (req.urli) return;
 			const imgiurl = `https://cdn.pdq.com/wp-content/uploads/${a}/company_${name}${c}.png`;
 			const imgi = await request(imgiurl)
@@ -62,8 +53,6 @@ function getImageUrls(req, res, next) {
 				return null;
 			})
 			if (imgi) {
-				console.log('imgiurl')
-				console.log(imgiurl);
 				req.urli = imgiurl;
 				return next()
 			}
@@ -71,12 +60,8 @@ function getImageUrls(req, res, next) {
 	});
 }
 
-app.use((req, res, next) => {
-  app.locals.env = process.env;
-})
-
 app.get('/reset', (req, res, next) => {
-	console.log('reset');
+	// redirected from 500 error
 	delete app.locals.thought;
 	app.locals.thinking = false;
 	app.locals.info = 'Please try again.'
@@ -91,16 +76,17 @@ app.get('/', (req, res, next) => {
 	})
 })
 
+// request brain api and return result
 app.post('/thought', async (req, res, next) => {
+	// reset locals info
 	delete app.locals.info;
-	delete app.locals.thought;
+	// only one API call at a time
 	if (!app.locals.thinking) {
+		delete app.locals.thought;
 		app.locals.thinking = true;
 		await request('https://pdqweb.azurewebsites.net/api/brain')
 		.then(async (response) => {
 			if (response) {
-				console.log('response');
-				console.log(response)
 				app.locals.thought = JSON.parse(response);
 				app.locals.thinking = false;
 			}
@@ -111,8 +97,9 @@ app.post('/thought', async (req, res, next) => {
 		})
 		.catch((err) => next(err));
 	} else {
+		// no change
 		return res.status(200).send({
-			thought: null,
+			thought: app.locals.thought,
 			thinking: true
 		})
 	}
@@ -125,6 +112,7 @@ app.post('/employee/:name', getImageUrls, async (req, res, next) => {
 	}
 })
 
+// polled in half-second increments for front-end reactive button state
 app.post('/check', (req, res, next) => {
 	if (app.locals.thinking) {
 		return res.status(200).send(app.locals.thinking);
@@ -145,7 +133,6 @@ app.use((err, req, res, next) => {
 	if (
 		is500Err
 	) {
-		console.log(err);
 		delete app.locals.thought;
 		app.locals.thinking = false;
 		app.locals.info = 'Please try again.'
@@ -154,38 +141,11 @@ app.use((err, req, res, next) => {
 		return next(err)
 	}
 })
-// app.use((err, req, res, next) => {
-//   if (req.xhr) {
-//     res.status(500).send({ error: 'Something failed!' })
-//   } else {
-//     next(err)
-//   }
-// })
+
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error', { error: err })
 })
-
-// app.use((req, res, next) => {
-// 	console.log(res)
-// 	if (res.status && res.status === 500) {
-// 		console.log('forward 500')
-// 		return next(res)
-// 	}
-// 	const err = new Error('Not Found');
-// 	var outputPath = url.parse(req.url).pathname;
-// 	console.log(outputPath);
-// 	err.status = 404;
-// 	return next(err);
-// });
-// 
-// app.use((err, req, res) => {
-// 	res.status(err.status || 500);
-// 	res.render('error', {
-// 		message: err.message,
-// 		error: {}
-// 	});
-// });
 
 app.set('port', '4000');
 if (!process.env.TEST_ENV) {
@@ -199,4 +159,3 @@ if (!process.env.TEST_ENV) {
 }
 
 module.exports = app;
-// export default app;

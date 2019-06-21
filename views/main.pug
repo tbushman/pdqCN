@@ -11,24 +11,24 @@ block content
 			p(v-text="thought.name")
 		div.centerall
 			
-			div.tb-10-m0.tb-07-m1.centerallwrap(style="height:calc(100% - 90px);", v-if="avatar")
+			div.tb-10-m0.tb-07-m2.centerallwrap(style="height:calc(100% - 90px);", v-if="avatar")
 				div.bubble.centerall
 					p.loltxt(v-text="thought.currentThought")
 					img(:src="thought.daydream")
-			div.tb-03-m1.clear(style="margin:0;height:0;")
-			div.tb-07-m1.clear(style="margin:0;height:0;")
-			div.tb-10-m0.tb-03-m1(style="transform: translateY(-10px);")
+			div.tb-03-m2.clear(style="margin:0;height:0;")
+			div.tb-07-m2.clear(style="margin:0;height:0;")
+			div.tb-10-m0.tb-03-m2(style="transform: translateY(-10px);")
 				div.tb-10-m0
 					div.dot
 				div.tb-10-m0
 					div.dot
-					div.tb-07-m0(v-if="avatar", style="float:right;")
+					div.tb-06-m0.tb-08-m1.tb-07-m2(v-if="avatar", style="float:right;")
 						p.tb-font-xxs(style="vertical-align:bottom;")
 							strong(v-text="'Name: '")
 							span(v-text="thought.name")
 				div.tb-10-m0
 					div.dot
-					div.tb-07-m0(v-if="avatar && thought.currentBeer", style="float:right;")
+					div.tb-06-m0.tb-08-m1.tb-07-m2(v-if="avatar && thought.currentBeer", style="float:right;")
 						p.tb-font-xxs(style="vertical-align:top;")
 							strong(v-text="'Drinking: '")
 							span(v-text="thought.currentBeer")

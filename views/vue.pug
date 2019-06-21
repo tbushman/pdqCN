@@ -5,13 +5,14 @@ script(type="text/javascript").
 		data: function data() {
 			return {
 				missingAvatar: false,
-				info: null,
+				info: this.parseObj(!{JSON.stringify(info)}),
 				avatar: null,
 				thought: this.parseObj(!{JSON.stringify(thought)}),
 				thinking: this.parseBool(!{JSON.stringify(thinking)}),
 				hov: '',
 				timeout: '',
-				interval: ''
+				interval: '',
+				appTitle: this.parseObj(!{JSON.stringify(appTitle)})
 			}
 		},
 		updated() {
@@ -32,7 +33,7 @@ script(type="text/javascript").
 				.catch((err) => {
 					if (err) self.thinking = false;
 				})
-			}, 100)
+			}, 500)
 		},
 		methods: {
 			parseObj(obj) {
@@ -57,6 +58,7 @@ script(type="text/javascript").
 					self.thinking = (!self.thought ? false : thinking);
 					self.missingAvatar = false;
 					if (!self.thinking) {
+						// inform server of notthinking status
 						$.post('/notthinking')
 						.then((result) => {
 						})
@@ -70,6 +72,7 @@ script(type="text/javascript").
 					if (!self.avatar) {
 						self.avatar = '/img/avatar.svg';
 						self.missingAvatar = true;
+						self.info = 'No image found for given Employee.'
 						clearTimeout(self.timeout);
 					}
 					self.thinking = (!self.thought ? false : thinking);

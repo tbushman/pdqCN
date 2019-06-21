@@ -2,16 +2,44 @@ extends layout
 block header
 	
 block content
-	div.centerallwrap
+	
+	div.centerallwrap#vue
+		.ui(v-if="avatar")
+			img(v-if="avatar", :src="avatar",
+				@mouseover="hovOver(thought.name)", @mouseleave="hovLeave"
+			)
+			p(v-text="thought.name")
 		div.centerall
-			div.tb-10-m0
-				button(v-if="!thinking", @click="getThought", v-text="'Get thought'")
-				p(v-if="thinking", v-text="'DN in use. Please wait.'")
-			div.tb-10-m0(v-if="thought")
-				p(v-text="thought.name")
-				p(v-text="thought.currentBeer")
-				p(v-text="thought.currentThought")
-				img(v-if="avatar", :src="avatar",
-					@mouseover="hovOver(thought.name)", @mouseleave="hovLeave"
-				)
-				img(:src="thought.daydream")
+			
+			div.tb-10-m0.tb-07-m1.centerallwrap(style="height:calc(100% - 90px);", v-if="avatar")
+				div.bubble.centerall
+					p.loltxt(v-text="thought.currentThought")
+					img(:src="thought.daydream")
+			div.tb-03-m1.clear(style="margin:0;height:0;")
+			div.tb-07-m1.clear(style="margin:0;height:0;")
+			div.tb-10-m0.tb-03-m1(style="transform: translateY(-10px);")
+				div.tb-10-m0
+					div.dot
+				div.tb-10-m0
+					div.dot
+					div.tb-07-m0(v-if="avatar", style="float:right;")
+						p.tb-font-xxs(style="vertical-align:bottom;")
+							strong(v-text="'Name: '")
+							span(v-text="thought.name")
+				div.tb-10-m0
+					div.dot
+					div.tb-07-m0(v-if="avatar && thought.currentBeer", style="float:right;")
+						p.tb-font-xxs(style="vertical-align:top;")
+							strong(v-text="'Drinking: '")
+							span(v-text="thought.currentBeer")
+			div.tb-10-m0(style="transform: translateY(-5px);")
+				div.row(v-if="info")
+					p(v-text="info")
+				div.row
+					button(v-if="!thinking", @click="getThought", v-text="(!avatar ? 'Read someone\\'s mind' : 'Read someone else\\'s mind')",
+						:style="{display: (!avatar ? 'inline-block' : 'inherit'), margin: (!avatar ? '0' : '0 auto'), 'padding': (!avatar ? '10px' : '12px 20px 20px 20px')}"
+					)
+					p(v-if="thinking", v-text="'DN in use. Please wait.'")
+
+
+				

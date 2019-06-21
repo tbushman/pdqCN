@@ -16,8 +16,9 @@ app.use(favicon(path.join('.', 'public/img', 'favicon.ico')));
 app.locals.$ = jQuery;
 // app.locals.Vue = Vue;
 app.locals.appTitle = 'PDQ Cabalistic_Necromancer';
-// app.use(helmet());
-// app.use(helmet.noCache());
+app.locals.appUrl = 'http://localhost:4000';
+app.use(helmet());
+app.use(helmet.noCache());
 // app.use((req, res, next) => {
 // 	res.set({
 // 		'Access-Control-Allow-Origin' : req.headers.origin,
@@ -38,74 +39,57 @@ function getImageUrls(req, res, next) {
 	const name = req.params.name;
 	console.log(name);
 	dates.forEach(async (a) => {
-	// years.forEach(async (a) => {
-	// 	if (urls) return;
-	// 	await months.forEach(async (b) => {
+		if (req.urli) return;
+		const imgurl = `https://cdn.pdq.com/wp-content/uploads/${a}/company_${name}.png`;
+		const img = await request(imgurl)
+		.then((d) => d)
+		.catch((e) => {
+			if (e.statusCode && e.statusCode === 404) return null;
+			return null;
+		})
+		if (img) {
+			console.log('imgurl')
+			console.log(imgurl)
+			req.urli = imgurl
+			return next();
+		}
+		await alpha.forEach(async (c) => {
 			if (req.urli) return;
-			const imgurl = `https://cdn.pdq.com/wp-content/uploads/${a}/company_${name}.png`;
-			// const imgurlf = `https://cdn.pdq.com/wp-content/uploads/${a}/legos_${name}.png`;
-			const img = await request(imgurl)
+			const imgiurl = `https://cdn.pdq.com/wp-content/uploads/${a}/company_${name}${c}.png`;
+			const imgi = await request(imgiurl)
 			.then((d) => d)
 			.catch((e) => {
 				if (e.statusCode && e.statusCode === 404) return null;
-				return null;// console.log(e)
+				return null;
 			})
-			if (img) {
-				console.log('imgurl')
-				console.log(imgurl)
-				req.urli = imgurl
-				return next();
-				// urls = {
-				// 	company: imgurl
-				// };
+			if (imgi) {
+				console.log('imgiurl')
+				console.log(imgiurl);
+				req.urli = imgiurl;
+				return next()
 			}
-			await alpha.forEach(async (c) => {
-				if (req.urli) return;
-				const imgiurl = `https://cdn.pdq.com/wp-content/uploads/${a}/company_${name}${c}.png`;
-				// const imgiurlf = `https://cdn.pdq.com/wp-content/uploads/${a}/legos_${name}${c}.png`;
-				const imgi = await request(imgiurl)
-				.then((d) => d)
-				.catch((e) => {
-					if (e.statusCode && e.statusCode === 404) return null;
-					return null;// console.log(e)
-				})
-				if (imgi) {
-					console.log('imgiurl')
-					console.log(imgiurl);
-					req.urli = imgiurl;
-					return next()
-					// urls = {
-					// 	company: imgiurl
-					// };
-				}
-				
-				// urls.push(`https://cdn.pdq.com/wp-content/uploads/${a}/${b}/company_${name}${c}.png`
-
-			})
-		// })
-		
+		})
 	});
-	// if (urls) {
-	// 	req.urls = urls;
-	// 	return next();
-	// }
-	// .forEa
-	// request(``, (err, response, body) => {
-	// 	console.log(body)
-	// 	if (body) {
-	// 		urls.company = body
-	// 	}
-	// })
 }
+
+app.get('/reset', (req, res, next) => {
+	console.log('reset');
+	delete app.locals.thought;
+	app.locals.thinking = false;
+	app.locals.info = 'Please try again.'
+	return res.redirect(307, '/');
+})
 
 app.get('/', (req, res, next) => {
 	return res.render('main', {
+		info: app.locals.info,
 		thought: app.locals.thought,
-		thinking: app.locals.thinking
+		thinking: false
 	})
 })
 
-app.post('/', async (req, res, next) => {
+app.post('/thought', async (req, res, next) => {
+	delete app.locals.info;
 	delete app.locals.thought;
 	if (!app.locals.thinking) {
 		app.locals.thinking = true;
@@ -123,12 +107,6 @@ app.post('/', async (req, res, next) => {
 			});
 		})
 		.catch((err) => next(err));
-		
-		// , async (err, response, body) => {
-		// 	if (err) return next(err);
-		// 	console.log('body:', JSON.parse(body));
-		// 
-		// })
 	} else {
 		return res.status(200).send({
 			thought: null,
@@ -138,39 +116,50 @@ app.post('/', async (req, res, next) => {
 })
 
 app.post('/employee/:name', getImageUrls, async (req, res, next) => {
-	// console.log(req.urli)
 	if (req.urli) {
-		const url = req.urli;//await getImageUrls(req.params.name);
+		const url = req.urli;
 		return res.status(200).send(url)
 	}
 })
 
-app.use((err, req, res, next) => {
-	console.log('err.stack')
-  console.log(Object.keys(err))
-	console.log(err)
-	console.log(err.stack.toString())
-	const isStatusCodeError = /(StatusCodeError.{1,10}500)/.test(err.stack.toString())
-	if (
-		isStatusCodeError// err.statusCode && err.statusCode === 500
-	) {
-		return res.render('error', {error: err})
+app.post('/check', (req, res, next) => {
+	if (app.locals.thinking) {
+		return res.status(200).send(app.locals.thinking);
 	} else {
-		next(err)
+		return res.status(200).send(false);
 	}
-	// if (err.stack instanceof expressValidation.StatusCodeError) {
-	// 	return res.render('error', {error: err})
-	// }
 })
-app.use((err, req, res, next) => {
-  if (req.xhr) {
-    res.status(500).send({ error: 'Something failed!' })
-  } else {
-    next(err)
-  }
+
+app.post('/notthinking', (req, res, next) => {
+	app.locals.thinking = false;
+	return res.status(200).send('ok')
 })
+
 app.use((err, req, res, next) => {
-  res.status(500)
+	const stringErr = JSON.stringify(err)
+	const parseErr = JSON.parse(stringErr);
+	const is500Err = (parseErr.statusCode === 500);
+	if (
+		is500Err
+	) {
+		console.log(err);
+		delete app.locals.thought;
+		app.locals.thinking = false;
+		app.locals.info = 'Please try again.'
+		return res.status(500).end(err)
+	} else {
+		return next(err)
+	}
+})
+// app.use((err, req, res, next) => {
+//   if (req.xhr) {
+//     res.status(500).send({ error: 'Something failed!' })
+//   } else {
+//     next(err)
+//   }
+// })
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
   res.render('error', { error: err })
 })
 
@@ -196,13 +185,16 @@ app.use((err, req, res, next) => {
 // });
 
 app.set('port', '4000');
-const server = http.createServer(app);
-server.listen('4000')//, onListening);
-server.on('error', (error) => {throw error});
-server.on('listening', onListening);
-function onListening() {
-  const addr = server.address();
-  console.log('Listening on port '+ addr.port);
+if (!process.env.TEST_ENV) {
+	const server = http.createServer(app);
+	server.listen('4000')//, onListening);
+	server.on('error', (error) => {throw error});
+	server.on('listening', onListening);
+	function onListening() {
+	  const addr = server.address();
+		console.log('listening on '+ addr)
+	}
 }
+
 module.exports = app;
 // export default app;

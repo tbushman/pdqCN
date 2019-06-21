@@ -1,77 +1,76 @@
 :root {
 	--afontname: 'Overpass';
 	--afonttype: sans-serif;
-	--primary: #221f24;
+	--primary: #DAEEFD;
 	--secondary: #322e35;
 	--tertiary: #113042;
 	--quarternary: #124059;
 	--quinary: rgb(238, 244, 222);
 	--highlight: #36616c;
-	--thumbw: 36px;
+	--thumbw: 45px;
 }
 
 html {
 	font-family: 'Overpass', sans-serif;
 	font-family: var(--afontname), var(--afonttype);
-	width: 100vw;
-	height: 100vh;
-	position: absolute;
-	margin: 0;
-	padding: 0;
+	margin: 0; padding: 0; overflow: hidden; left: 0; right: 0; top: 0;
+	bottom: 0; width: 100%; height: 100%; position: absolute;
+	pointer-events: none; overflow-x: hidden; overflow-y: hidden;
 	font-size: calc(16px + 0.5vm);
 	font-size: calc(16px + 0.5vmin);
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
 }
-
 body {
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	pointer-events: none;
-	overflow-x: hidden;
-	overflow-y: hidden;
-	z-index: 0;
-	background-color: #fff;
+	margin: 0; padding: 0; overflow: hidden; left: 0; right: 0; top: 0;
+	bottom: 0; width: 100%; height: 100%; position: absolute;
+	pointer-events: none; overflow-x: hidden; overflow-y: hidden;
+	z-index: 0; background-color: #211e23;
 	background-color: var(--primary);
 }
+
+.tb-font-xxs {
+	font-size: calc(45px / 3.7);
+	font-size: calc(var(--thumbw) / 3.7);
+	font-weight: 100;
+	padding: 0;
+	margin: 0;
+	display: inline-block;
+}
+
 
 .centerallwrap {
 	display: block;
 	position: relative;
-	height: 100vh;
+	height: 100%;
 	width: 100%;
 	margin: 0;
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: hidden;
 }
 
 .centerall {
-	height: auto;
 	overflow-y: hidden;
 	overflow-x: hidden;
 	pointer-events: all;
 	padding: 45px;
-	min-height: 100%;
+	padding: var(--thumbw);
+	height: calc(100% - 90px);
 	position: relative;
 	display: block;
+}
+
+.row {
+	width: 100%;
+	left: 0;
+	right: 0;
+	height: auto;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
 *[class^='tb-1'], *[class^='tb-0'] {
 	padding-right: 10px;
 	display: inline-block;
 	margin: 0 auto;
-	width: auto;
-	height: auto;
 	box-sizing: border-box;
 	overflow-x: hidden;
 	overflow-y: hidden;
@@ -108,6 +107,18 @@ body {
 *[class^='tb-01-'] {
 	width: 10%;
 }
+*[class^='tb-5p-'] {
+	width: 5%;
+}
+*[class^='tb-3p-'] {
+	width: 3%;
+}
+*[class^='tb-2p-'] {
+	width: 2%;
+}
+.clear {
+	display: none;
+}
 button {
 	border: 0;
 	font-style: normal;
@@ -128,4 +139,124 @@ button:hover {
 button span {
 	color: #fff;
 	color: var(--primary);
+}
+.ui {
+	min-width: calc(36px - 6px);
+	min-width: calc(var(--thumbw) - 6px);
+	bottom: 0;
+	top: auto;
+	background-color: #322e35;
+	background-color: var(--secondary);
+	display: inline-block;
+	margin-right: 6px;
+	position: fixed;
+	left: 45px;
+	left: var(--thumbw);
+	right: auto;
+	background-color: rgba(255,255,255,0);
+	height: 100px;
+}
+
+.ui img {
+	width: auto;
+	height: 100%;
+	position: relative;
+	line-height: 45px;
+	line-height: var(--thumbw);
+	font-size: calc(45px / 2);
+	font-size: calc(var(--thumbw) / 2);
+	text-align: center;
+}
+
+.loltxt {
+	position: absolute;
+	font-family: Arial, sans-serif;
+	color: #fff;
+	padding: 100px;
+	text-align: center;
+	z-index: 2;
+	letter-spacing: -0.5px;
+	margin: auto;
+	left: 0;
+	right: 0;
+	font-weight: bold;
+	font-size: 5vw;
+}
+
+.bubble {
+	width: 100%;
+	height: 100%;
+	border-radius: 20%;
+	padding: 0;
+}
+
+.bubble img {
+	width: 100%;
+	height: auto;
+	/* min-width: 100%; */
+	min-height: 100%;
+	/* max-width: 150%; */
+	max-height: 250%;
+	margin: auto;
+	/* transform: translate(0, -15%); */
+}
+
+.dot {
+	margin: 0 auto;
+	display: inline-block;
+	position: relative;
+	border-radius: 50%;
+	background-color: #fff;
+	width: calc(45px / 2);
+	width: calc(var(--thumbw) / 2);
+	height: calc(45px / 2);
+	width: calc(var(--thumbw) / 2);
+}
+
+@media (min-width: 1000px) {
+	.ui {
+		left: 68%;
+	}
+	.clear {
+		display: inline-block;
+	}
+	.tb-10-m1 {
+		width: 100%;
+	}
+	.tb-09-m1 {
+		width: 90%;
+	}
+	.tb-08-m1 {
+		width: 80%;
+	}
+	.tb-07-m1 {
+		width: 70%;
+	}
+	.tb-06-m1 {
+		width: 60%;
+	}
+	.tb-05-m1 {
+		width: 50%;
+	}
+	.tb-04-m1 {
+		width: 40%;
+	}
+	.tb-03-m1 {
+		width: 30%;
+	}
+	.tb-02-m1 {
+		width: 20%;
+	}
+	.tb-01-m1 {
+		width: 10%;
+	}
+	.tb-5p-m1 {
+		width: 5%;
+	}
+	.tb-3p-m1 {
+		width: 3%;
+	}
+	.tb-2p-m1 {
+		width: 2%;
+	}
 }

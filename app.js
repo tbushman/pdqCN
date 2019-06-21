@@ -154,7 +154,7 @@ if (!process.env.TEST_ENV) {
 	server.on('error', (error) => {throw error});
 	server.on('listening', onListening);
 	function onListening() {
-		console.log('listening on 80')
+		console.log('listening on 4000:80')
 	}
 }
 

@@ -5,6 +5,7 @@
   "main": "./app.js",
   "scripts": {
     "test": "cross-env TEST_ENV=true RECORD_ENV=true jest --updateSnapshot --forceExit --detectOpenHandles",
+    "test-lock": "cross-env TEST_ENV=true RECORD_ENV=false jest --forceExit --detectOpenHandles",
     "start": "nodemon"
   },
   "repository": {

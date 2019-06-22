@@ -14,7 +14,8 @@ script(type="text/javascript").
 				interval: '',
 				appTitle: this.parseObj(!{JSON.stringify(appTitle)}),
 				wiw: window.innerWidth,
-				wih: window.innerHeight
+				wih: window.innerHeight,
+				bubblesize: null
 			}
 		},
 		updated() {
@@ -27,6 +28,8 @@ script(type="text/javascript").
 		},
 		mounted() {
 			var self = this;
+			self.getBubbleSize();
+			window.addEventListener('resize', self.handleResize)//- window.onresize = self.getBubbleSize();
 			self.interval = setInterval(() => {
 				$.post('/check')
 				.then((result) => {
@@ -52,6 +55,12 @@ script(type="text/javascript").
 			hovLeave() {
 				this.hov = ''
 			},
+			handleResize() {
+				var self = this;
+				self.wiw = window.innerWidth;
+				self.wih = window.innerHeight;
+				self.getBubbleSize();
+			},
 			getBubbleSize() {
 				var self = this;
 				var initsize = 480;
@@ -63,8 +72,7 @@ script(type="text/javascript").
 				var diffH = targetHeight - initsize;
 				var perH = diffH / targetHeight;
 				var scaleH = 1 + perH;
-	
-				return 'scale('+scaleW+', '+scaleH+')';;
+				self.bubblesize = 'scale('+scaleW+', '+scaleH+')';
 			},
 			getAvatar(thinking) {
 				var self = this;

@@ -33,7 +33,11 @@ script(type="text/javascript").
 			self.interval = setInterval(() => {
 				$.post('/check')
 				.then((result) => {
-					if (result && result !== undefined) self.thinking = result;
+					if (result && result !== undefined) {
+						self.thinking = result;
+					} else {
+						self.thinking = false;
+					}
 				})
 				.catch((err) => {
 					if (err) self.thinking = false;
@@ -64,11 +68,11 @@ script(type="text/javascript").
 			getBubbleSize() {
 				var self = this;
 				var initsize = 480;
-				var targetWidth = (!self.wiw <= 1000 ? (self.wiw - 90) : (self.wiw * 0.7));
+				var targetWidth = (!self.wiw <= 1000 ? (self.wiw - 90) : ((self.wiw - 90) * 0.7));
 				var diffW = targetWidth - initsize;
 				var perW = diffW / targetWidth;
 				var scaleW = 1 + perW;
-				var targetHeight = (self.wih - 90);
+				var targetHeight = (self.wih - 90) - 90;
 				var diffH = targetHeight - initsize;
 				var perH = diffH / targetHeight;
 				var scaleH = 1 + perH;
@@ -76,6 +80,7 @@ script(type="text/javascript").
 			},
 			getAvatar(thinking) {
 				var self = this;
+				console.log(thinking)
 				$.post(`/employee/${self.thought.name}`)
 				.then((avatar) => {
 					self.avatar = avatar;

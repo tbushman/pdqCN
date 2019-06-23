@@ -35,7 +35,7 @@ function getImageUrls(req, res, next) {
 		.catch((e) => {
 			// ignore not-found errors
 			if (e.statusCode && e.statusCode === 404) return null;
-			return null;
+			return next(e);
 		})
 		if (img) {
 			req.urli = imgurl
@@ -50,7 +50,7 @@ function getImageUrls(req, res, next) {
 			.then((d) => d)
 			.catch((e) => {
 				if (e.statusCode && e.statusCode === 404) return null;
-				return null;
+				return next(e);
 			})
 			if (imgi) {
 				req.urli = imgiurl;
@@ -63,6 +63,7 @@ function getImageUrls(req, res, next) {
 app.get('/reset', (req, res, next) => {
 	// redirected from 500 error
 	delete app.locals.thought;
+	app.locals.avatar = null;
 	app.locals.thinking = false;
 	app.locals.info = 'Please try again.'
 	return res.redirect(307, '/');
@@ -72,7 +73,8 @@ app.get('/', (req, res, next) => {
 	return res.render('main', {
 		info: app.locals.info,
 		thought: app.locals.thought,
-		thinking: false
+		thinking: false,
+		avatar: app.locals.avatar
 	})
 })
 
@@ -82,8 +84,9 @@ app.post('/thought', async (req, res, next) => {
 	delete app.locals.info;
 	// only one API call at a time
 	if (!app.locals.thinking) {
-		delete app.locals.thought;
+		// delete app.locals.thought;
 		app.locals.thinking = true;
+		app.locals.avatar = null;
 		await request('https://pdqweb.azurewebsites.net/api/brain')
 		.then(async (response) => {
 			if (response) {
@@ -108,6 +111,7 @@ app.post('/thought', async (req, res, next) => {
 app.post('/employee/:name', getImageUrls, async (req, res, next) => {
 	if (req.urli) {
 		const url = req.urli;
+		app.locals.urli = req.urli;
 		return res.status(200).send(url)
 	}
 })
@@ -115,14 +119,25 @@ app.post('/employee/:name', getImageUrls, async (req, res, next) => {
 // polled in half-second increments for front-end reactive button state
 app.post('/check', (req, res, next) => {
 	if (app.locals.thinking) {
-		return res.status(200).send(app.locals.thinking);
+		return res.status(200).send({
+			thinking: app.locals.thinking,
+			thought: app.locals.thought,
+			avatar: app.locals.avatar
+		});
 	} else {
-		return res.status(200).send(false);
+		return res.status(200).send({
+			thinking: false,
+			thought: app.locals.thought,
+			avatar: app.locals.avatar
+		});
 	}
 })
 
 app.post('/notthinking', (req, res, next) => {
 	app.locals.thinking = false;
+	if (req.query.q) {
+		app.locals.avatar = decodeURIComponent(req.query.q) + '';
+	}
 	return res.status(200).send('ok')
 })
 

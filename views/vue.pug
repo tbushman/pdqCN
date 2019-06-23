@@ -34,10 +34,12 @@ script(type="text/javascript").
 				$.post('/check')
 				.then((result) => {
 					if (result && result !== undefined) {
-						self.thinking = result;
+						self.thinking = result.thinking;
 					} else {
 						self.thinking = false;
 					}
+					self.thought = result.thought;
+					self.avatar = result.avatar;
 				})
 				.catch((err) => {
 					if (err) self.thinking = false;
@@ -84,11 +86,11 @@ script(type="text/javascript").
 				$.post(`/employee/${self.thought.name}`)
 				.then((avatar) => {
 					self.avatar = avatar;
-					self.thinking = (!self.thought ? false : thinking);
+					self.thinking = (!self.thought ? (!thinking ? false : true) : thinking);
 					self.missingAvatar = false;
 					if (!self.thinking) {
 						// inform server of notthinking status
-						$.post('/notthinking')
+						$.post('/notthinking?q='+encodeURIComponent(avatar)+'')
 						.then((result) => {
 						})
 						.catch((err) => {
@@ -101,10 +103,14 @@ script(type="text/javascript").
 					if (!self.avatar) {
 						self.avatar = '/img/avatar.svg';
 						self.missingAvatar = true;
-						self.info = 'No image found for given Employee.'
+						self.info = 'No image found for given Employee.';
 						clearTimeout(self.timeout);
+						$.post('/notthinking?q='+encodeURIComponent(self.avatar)+'').then((result) => {})
+						.catch((err) => {
+							console.log(err)
+						})
 					}
-					self.thinking = (!self.thought ? false : thinking);
+					self.thinking = (!self.thought ? (!self.thinking ? false : true) : false);
 				}, 12000)
 			},
 			getThought() {
@@ -120,9 +126,7 @@ script(type="text/javascript").
 							return window.location.href = '/reset';
 						}
 						self.thought = body.thought;
-						if (!self.avatar) {
-							self.getAvatar(body.thinking)
-						}
+						return self.getAvatar(body.thinking);
 					})
 					.catch((err) => {
 						if (err.status === 500) {

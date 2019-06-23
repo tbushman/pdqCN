@@ -1,0 +1,62 @@
+[
+    {
+        "scope": "https://pdqweb.azurewebsites.net:443",
+        "method": "GET",
+        "path": "/api/brain",
+        "body": "",
+        "status": 500,
+        "response": "Oops! The server errored ¯\\_(ツ)_/¯",
+        "rawHeaders": [
+            "Content-Length",
+            "38",
+            "Content-Type",
+            "text/plain; charset=utf-8",
+            "Server",
+            "Kestrel",
+            "Date",
+            "Sun, 23 Jun 2019 06:50:39 GMT",
+            "Connection",
+            "close"
+        ]
+    },
+    {
+        "scope": "http://127.0.0.1:52573",
+        "method": "POST",
+        "path": "/thought",
+        "body": "",
+        "status": 500,
+        "response": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"><html><head><meta charset=\"utf-8\"/><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge; charset=utf-8\"/><title>PDQ Cabalistic_Necromancer</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/><link href=\"https://fonts.googleapis.com/css?family=Overpass:200,400,700\" rel=\"stylesheet\"/><link rel=\"stylesheet\" href=\"/stylesheets/style.css\"/><link href=\"data:,\" rel=\"icon\"/></head><body><div class=\"centerallwrap\"><div class=\"centerall\"><div class=\"tb-10-m0\"><div>TypeError [ERR_INVALID_ARG_TYPE]: The &quot;chunk&quot; argument must be one of type string or Buffer. Received type object</div></div></div></div></body></html>",
+        "rawHeaders": [
+            "X-DNS-Prefetch-Control",
+            "off",
+            "X-Frame-Options",
+            "SAMEORIGIN",
+            "Strict-Transport-Security",
+            "max-age=15552000; includeSubDomains",
+            "X-Download-Options",
+            "noopen",
+            "X-Content-Type-Options",
+            "nosniff",
+            "X-XSS-Protection",
+            "1; mode=block",
+            "Surrogate-Control",
+            "no-store",
+            "Cache-Control",
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+            "Pragma",
+            "no-cache",
+            "Expires",
+            "0",
+            "Content-Type",
+            "text/html; charset=utf-8",
+            "Content-Length",
+            "754",
+            "ETag",
+            "W/\"2f2-vHVnyoX8276JNASPZpW5Bxg5BHU\"",
+            "Date",
+            "Sun, 23 Jun 2019 06:51:00 GMT",
+            "Connection",
+            "close"
+        ]
+    }
+]

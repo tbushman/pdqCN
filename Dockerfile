@@ -18,7 +18,7 @@ RUN npm install --pure-lockfile
 COPY . /app/
 
 # expose port 4000
-EXPOSE 4000
+EXPOSE 80
 
 # cmd to start service
 CMD [ "npm", "start" ]

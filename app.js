@@ -21,7 +21,6 @@ app.use(helmet.noCache());
 const alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 // for iterating through potential image folders (unknown)
 const dates = ['2018/08', '2018/09', '2018/10', '2018/12', '2019/02', '2019/04', '2019/05', '2019/06']
-
 // check if image exists for first name given
 function getImageUrls(req, res, next) {
 	delete req.urli;

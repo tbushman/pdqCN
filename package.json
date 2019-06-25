@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "glob": "^7.1.4",
     "helmet": "^3.18.0",
     "jquery": "^3.4.1",
     "pug": "^2.0.3",
